@@ -5,7 +5,7 @@ import { apiFetch } from "./api";
 // URL de la API:
 // En la nube (AWS API Gateway): "https://awgixcuqq1.execute-api.us-east-1.amazonaws.com/ordenes"
 // En local (Spring Boot, Actividad 1.3.3): "http://localhost:8080/api/ordenes"
-const API_URL = "https://awgixcuqq1.execute-api.us-east-1.amazonaws.com/ordenes";
+const API_URL = "http://localhost:8081/api/ordenes";
 
 export default function App() {
   const [account, setAccount] = useState(null);
@@ -29,7 +29,7 @@ export default function App() {
           }
         }
       } catch (err) {
-        console.error("Error al inicializar autenticación:", err);
+        console.error("Error al inicializar autenticaciï¿½n:", err);
         setGlobalError(err.message || "Error al conectar con el proveedor de identidad");
       } finally {
         setInitializing(false);
@@ -43,9 +43,9 @@ export default function App() {
     try {
       // Actividad 1.3.2: Llamada mediante el interceptor apiFetch
       const res = await apiFetch(API_URL);
-      if (!res) return; // Si redirigió por InteractionRequiredAuthError
+      if (!res) return; // Si redirigiï¿½ por InteractionRequiredAuthError
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: ${res.statusText || "Error en la petición"}`);
+        throw new Error(`HTTP ${res.status}: ${res.statusText || "Error en la peticiï¿½n"}`);
       }
       const data = await res.json();
       if (Array.isArray(data)) {
@@ -53,10 +53,10 @@ export default function App() {
         setEstadoCarga("listo");
       } else {
         console.error("La respuesta no es un arreglo:", data);
-        throw new Error("El formato de respuesta no es un arreglo válido");
+        throw new Error("El formato de respuesta no es un arreglo vï¿½lido");
       }
     } catch (err) {
-      console.error("Error al obtener órdenes:", err);
+      console.error("Error al obtener ï¿½rdenes:", err);
       setErrorDetalle(err.message || "No se pudo conectar con la API");
       setEstadoCarga("error");
     }
@@ -87,7 +87,7 @@ export default function App() {
       await msalInstance.loginRedirect(loginRequest);
     } catch (err) {
       console.error("Error en login:", err);
-      setGlobalError(err.message || "No se pudo iniciar sesión");
+      setGlobalError(err.message || "No se pudo iniciar sesiï¿½n");
     }
   };
 
@@ -96,14 +96,14 @@ export default function App() {
       await msalInstance.logoutRedirect();
     } catch (err) {
       console.error("Error en logout:", err);
-      setGlobalError(err.message || "Error al cerrar sesión");
+      setGlobalError(err.message || "Error al cerrar sesiï¿½n");
     }
   };
 
   const obtenerNombreUsuario = () => {
     if (!account) return "";
     const claims = account.idTokenClaims || {};
-    return claims.name || claims.preferred_username || claims.email || claims.given_name || account.name || account.username || "Técnico";
+    return claims.name || claims.preferred_username || claims.email || claims.given_name || account.name || account.username || "Tï¿½cnico";
   };
 
   const obtenerEmailUsuario = () => {
@@ -131,7 +131,7 @@ export default function App() {
             <span className="error-icon">??</span>
             <span>{globalError}</span>
           </div>
-          <button className="error-close" onClick={() => setGlobalError(null)}>×</button>
+          <button className="error-close" onClick={() => setGlobalError(null)}>ï¿½</button>
         </div>
       )}
 
@@ -146,11 +146,11 @@ export default function App() {
               </div>
             </div>
             <div className="header-right">
-              <button className="btn-logout" onClick={handleLogout} title="Cerrar sesión">
+              <button className="btn-logout" onClick={handleLogout} title="Cerrar sesiï¿½n">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
                 </svg>
-                Cerrar sesión
+                Cerrar sesiï¿½n
               </button>
             </div>
           </header>
@@ -159,11 +159,11 @@ export default function App() {
             <div className="content-card">
               <div className="section-title-row">
                 <div>
-                  <h3 className="section-title">ÓRDENES ASIGNADAS</h3>
+                  <h3 className="section-title">ï¿½RDENES ASIGNADAS</h3>
                   <p className="section-subtitle">Datos consumidos desde API Gateway + AWS Lambda</p>
                 </div>
                 <div className="actions-header">
-                  <button className="btn-reload" onClick={cargarOrdenes} title="Recargar órdenes">
+                  <button className="btn-reload" onClick={cargarOrdenes} title="Recargar ï¿½rdenes">
                     ?? Recargar
                   </button>
                 </div>
@@ -172,17 +172,17 @@ export default function App() {
               {estadoCarga === "cargando" && (
                 <div className="state-box loading-box">
                   <div className="spinner"></div>
-                  <p>Cargando órdenes de trabajo desde la API...</p>
+                  <p>Cargando ï¿½rdenes de trabajo desde la API...</p>
                 </div>
               )}
 
               {estadoCarga === "error" && (
                 <div className="state-box error-box">
                   <div className="error-icon-big">?</div>
-                  <h4>Error al obtener órdenes de trabajo</h4>
+                  <h4>Error al obtener ï¿½rdenes de trabajo</h4>
                   <p className="error-msg-detail">{errorDetalle || "No se pudo comunicar con el endpoint de API Gateway."}</p>
                   <p className="error-hint">
-                    Verifica que tu API en AWS esté activa, que la ruta <code>/ordenes</code> tenga la integración Lambda adjunta y que CORS esté configurado.
+                    Verifica que tu API en AWS estï¿½ activa, que la ruta <code>/ordenes</code> tenga la integraciï¿½n Lambda adjunta y que CORS estï¿½ configurado.
                   </p>
                   <button className="btn-secondary" onClick={cargarOrdenes}>Reintentar</button>
                 </div>
@@ -192,14 +192,14 @@ export default function App() {
                 <div className="orders-table-wrapper">
                   {ordenes.length === 0 ? (
                     <div className="empty-box">
-                      <p>No hay órdenes de trabajo disponibles en este momento.</p>
+                      <p>No hay ï¿½rdenes de trabajo disponibles en este momento.</p>
                     </div>
                   ) : (
                     <table className="orders-table">
                       <thead>
                         <tr>
-                          <th>Código</th>
-                          <th>Descripción del trabajo</th>
+                          <th>Cï¿½digo</th>
+                          <th>Descripciï¿½n del trabajo</th>
                           <th>Estado</th>
                         </tr>
                       </thead>
@@ -225,7 +225,7 @@ export default function App() {
             <div className="identity-card">
               <details className="claims-inspector">
                 <summary className="claims-summary">
-                  ?? Información del ID Token (Claims recibidos de Entra External ID)
+                  ?? Informaciï¿½n del ID Token (Claims recibidos de Entra External ID)
                 </summary>
                 <div className="claims-content">
                   <pre>{JSON.stringify(account.idTokenClaims, null, 2)}</pre>
@@ -235,7 +235,7 @@ export default function App() {
           </main>
 
           <footer className="portal-footer">
-            <p>TallerPro360 · Actividad 1.2.11 Cloud Native · AWS API Gateway + Lambda & Azure Entra ID</p>
+            <p>TallerPro360 ï¿½ Actividad 1.2.11 Cloud Native ï¿½ AWS API Gateway + Lambda & Azure Entra ID</p>
           </footer>
         </div>
       ) : (
@@ -244,17 +244,17 @@ export default function App() {
             <div className="brand-header">
               <div className="logo-badge">??</div>
               <h1 className="portal-title">TallerPro360</h1>
-              <p className="portal-subtitle">Portal de técnicos</p>
+              <p className="portal-subtitle">Portal de tï¿½cnicos</p>
             </div>
             <div className="card-body">
               <p className="access-info">
-                Bienvenido al sistema de gestión de taller. Por favor, autentícate con tu cuenta para acceder a tus órdenes de trabajo asignadas.
+                Bienvenido al sistema de gestiï¿½n de taller. Por favor, autentï¿½cate con tu cuenta para acceder a tus ï¿½rdenes de trabajo asignadas.
               </p>
               <button className="btn-primary" onClick={handleLogin}>
                 <svg className="login-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
                 </svg>
-                Iniciar sesión
+                Iniciar sesiï¿½n
               </button>
             </div>
             <div className="card-footer">
